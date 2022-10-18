@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installer-gui-script minSpecVersion="1">
+    <pkg-ref id="pl.unstabler.ulalaca.sessionprojector"/>
+    <pkg-ref id="pl.unstabler.ulalaca.sessionbroker"/>
+
+    <title>麗 -Ulalaca-</title>
+    <welcome file="readme.txt" uti="TEXT" />
+    <readme file="readme.txt" uti="TEXT" />
+    <license file="license.txt" uti="TEXT" />
+
+    <options 
+        customize="never"
+        rootVolumeOnly="true"
+        require-scripts="true" 
+        hostArchitectures="x86_64,arm64"
+    />
+    <choices-outline>
+        <line choice="default">
+            <line choice="pl.unstabler.ulalaca.sessionprojector"/>
+            <line choice="pl.unstabler.ulalaca.sessionbroker"/>
+        </line>
+    </choices-outline>
+    <choice id="default"/>
+    <choice id="pl.unstabler.ulalaca.sessionprojector" visible="false" title="sessionprojector">
+        <pkg-ref id="pl.unstabler.ulalaca.sessionprojector"/>
+    </choice>
+    <choice id="pl.unstabler.ulalaca.sessionbroker" visible="false" title="sessionbroker">
+       <pkg-ref id="pl.unstabler.ulalaca.sessionbroker"/>
+    </choice>
+
+    <pkg-ref 
+        id="pl.unstabler.ulalaca.sessionprojector" 
+        auth="root"
+        version="1.0.0" 
+        onConclusion="none"
+    >
+        sessionprojector.pkg
+    </pkg-ref>
+    <pkg-ref 
+        id="pl.unstabler.ulalaca.sessionbroker" 
+        auth="root"
+        version="1.0.0" 
+        onConclusion="none"
+    >
+        sessionbroker.pkg
+    </pkg-ref>
+
+</installer-gui-script>
