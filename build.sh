@@ -11,10 +11,13 @@ SIGN_IDENTITY="Developer ID Installer: team unstablers Inc."
 SESSIONBROKER_IDENTIFIER="pl.unstabler.ulalaca.sessionbroker"
 SESSIONPROJECTOR_IDENTIFIER="pl.unstabler.ulalaca.sessionprojector"
 
+CODE_SIGN_STYLE="Manual"
+CODE_SIGN_IDENTITY="Developer ID Application: team unstablers Inc."
+
 function package_sessionbroker() {
     rm -rf $PWD/intermediate/sessionbroker
     mkdir -p $PWD/intermediate/sessionbroker
-    xcodebuild DSTROOT=$PWD/intermediate/sessionbroker -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionbroker install
+    xcodebuild DSTROOT=$PWD/intermediate/sessionbroker CODE_SIGN_STYLE="$CODE_SIGN_STYLE" CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionbroker install
 
     mkdir -p $PWD/intermediate/sessionbroker/etc
     cp -rv $ULALACA_SRC/sessionbroker/pam.d $PWD/intermediate/sessionbroker/etc/
@@ -25,7 +28,7 @@ function package_sessionbroker() {
     pkgbuild \
         --identifier "$SESSIONBROKER_IDENTIFIER" \
         --version $VERSION \
-        --min-os-version "12.3" \
+        --min-os-version "13.0" \
         --root "$PWD/intermediate/sessionbroker" \
         --scripts "$PWD/scripts/sessionbroker" \
         "$PWD/sessionbroker.pkg"
@@ -34,7 +37,8 @@ function package_sessionbroker() {
 function package_sessionprojector() {
     rm -rf $PWD/intermediate/sessionprojector
     mkdir -p $PWD/intermediate/sessionprojector
-    xcodebuild DSTROOT=$PWD/intermediate/sessionprojector -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionprojector install
+    xcodebuild DSTROOT=$PWD/intermediate/sessionprojector CODE_SIGN_STYLE="$CODE_SIGN_STYLE" CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionprojector install
+    xcodebuild DSTROOT=$PWD/intermediate/sessionprojector CODE_SIGN_STYLE="$CODE_SIGN_STYLE" CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionprojector-launcher install
 
     mkdir -p $PWD/intermediate/sessionprojector/Library
     cp -rv $ULALACA_SRC/sessionprojector/LaunchAgents $PWD/intermediate/sessionprojector/Library/
