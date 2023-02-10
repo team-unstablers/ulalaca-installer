@@ -10,6 +10,7 @@ SIGN_IDENTITY="Developer ID Installer: team unstablers Inc."
 
 SESSIONBROKER_IDENTIFIER="pl.unstabler.ulalaca.sessionbroker"
 SESSIONPROJECTOR_IDENTIFIER="pl.unstabler.ulalaca.sessionprojector"
+SESSIONPROJECTOR_LAUNCHER_IDENTIFIER="pl.unstabler.ulalaca.sessionprojector.launcher"
 
 CODE_SIGN_STYLE="Manual"
 CODE_SIGN_IDENTITY="Developer ID Application: team unstablers Inc."
@@ -31,6 +32,7 @@ function package_sessionbroker() {
         --min-os-version "13.0" \
         --root "$PWD/intermediate/sessionbroker" \
         --scripts "$PWD/scripts/sessionbroker" \
+        --install-location "/" \
         "$PWD/sessionbroker.pkg"
 }
 
@@ -38,22 +40,37 @@ function package_sessionprojector() {
     rm -rf $PWD/intermediate/sessionprojector
     mkdir -p $PWD/intermediate/sessionprojector
     xcodebuild DSTROOT=$PWD/intermediate/sessionprojector CODE_SIGN_STYLE="$CODE_SIGN_STYLE" CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionprojector install
-    xcodebuild DSTROOT=$PWD/intermediate/sessionprojector CODE_SIGN_STYLE="$CODE_SIGN_STYLE" CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionprojector-launcher install
+
+    # --identifier "$SESSIONPROJECTOR_IDENTIFIER" \
+    pkgbuild \
+        --component "$PWD/intermediate/sessionprojector/Applications/sessionprojector.app" \
+        --version $VERSION \
+        --min-os-version "13.0" \
+        --install-location /Applications \
+        "$PWD/sessionprojector.pkg"
+}
+
+function package_sessionprojector_launcher() {
+    rm -rf $PWD/intermediate/sessionprojector-launcher
+    mkdir -p $PWD/intermediate/sessionprojector-launcher
+    xcodebuild DSTROOT=$PWD/intermediate/sessionprojector-launcher CODE_SIGN_STYLE="$CODE_SIGN_STYLE" CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionprojector-launcher install
 
     mkdir -p $PWD/intermediate/sessionprojector/Library
     cp -rv $ULALACA_SRC/sessionprojector/LaunchAgents $PWD/intermediate/sessionprojector/Library/
 
     pkgbuild \
-        --identifier "$SESSIONPROJECTOR_IDENTIFIER" \
+        --identifier "$SESSIONPROJECTOR_LAUNCHER_IDENTIFIER" \
         --version $VERSION \
-        --min-os-version "12.3" \
-        --root "$PWD/intermediate/sessionprojector" \
-        --scripts "$PWD/scripts/sessionprojector" \
-        "$PWD/sessionprojector.pkg"
+        --min-os-version "13.0" \
+        --root "$PWD/intermediate/sessionprojector-launcher" \
+        --scripts "$PWD/scripts/sessionprojector-launcher" \
+        --install-location "/" \
+        "$PWD/sessionprojector-launcher.pkg"
 }
 
 package_sessionbroker
 package_sessionprojector
+package_sessionprojector_launcher
 
-productbuild --distribution ./Distribution.xml --package-path . ./ulalaca_unsigned.pkg
-productsign --sign "$SIGN_IDENTITY" ./ulalaca_unsigned.pkg ./ulalaca_signed.pkg
+productbuild --distribution ./Distribution.xml --package-path . ./ulalaca.unsigned.pkg
+productsign --sign "$SIGN_IDENTITY" ./ulalaca.unsigned.pkg ./ulalaca.signed.pkg

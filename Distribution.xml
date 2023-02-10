@@ -17,12 +17,16 @@
     <choices-outline>
         <line choice="default">
             <line choice="pl.unstabler.ulalaca.sessionprojector"/>
+            <line choice="pl.unstabler.ulalaca.sessionprojector.launcher"/>
             <line choice="pl.unstabler.ulalaca.sessionbroker"/>
         </line>
     </choices-outline>
     <choice id="default"/>
     <choice id="pl.unstabler.ulalaca.sessionprojector" visible="false" title="sessionprojector">
         <pkg-ref id="pl.unstabler.ulalaca.sessionprojector"/>
+    </choice>
+    <choice id="pl.unstabler.ulalaca.sessionprojector.launcher" visible="false" title="sessionprojector-launcher">
+        <pkg-ref id="pl.unstabler.ulalaca.sessionprojector.launcher"/>
     </choice>
     <choice id="pl.unstabler.ulalaca.sessionbroker" visible="false" title="sessionbroker">
        <pkg-ref id="pl.unstabler.ulalaca.sessionbroker"/>
@@ -35,6 +39,14 @@
         onConclusion="none"
     >
         sessionprojector.pkg
+    </pkg-ref>
+    <pkg-ref 
+        id="pl.unstabler.ulalaca.sessionprojector.launcher" 
+        auth="root"
+        version="1.0.0" 
+        onConclusion="none"
+    >
+        sessionprojector-launcher.pkg
     </pkg-ref>
     <pkg-ref 
         id="pl.unstabler.ulalaca.sessionbroker" 
