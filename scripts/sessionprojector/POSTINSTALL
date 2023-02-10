@@ -1,2 +1,2 @@
 #!/bin/sh
-launchctl enable system/pl.unstabler.ulalaca.sessionprojector
+launchctl enable system/pl.unstabler.ulalaca.sessionprojector.launcher
