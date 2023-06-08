@@ -18,7 +18,7 @@ CODE_SIGN_IDENTITY="Developer ID Application: team unstablers Inc."
 function package_sessionbroker() {
     rm -rf $PWD/intermediate/sessionbroker
     mkdir -p $PWD/intermediate/sessionbroker
-    xcodebuild DSTROOT=$PWD/intermediate/sessionbroker CODE_SIGN_STYLE="$CODE_SIGN_STYLE" CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionbroker install
+    xcodebuild DSTROOT=$PWD/intermediate/sessionbroker/opt CODE_SIGN_STYLE="$CODE_SIGN_STYLE" CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionbroker install
 
     mkdir -p $PWD/intermediate/sessionbroker/etc
     cp -rv $ULALACA_SRC/sessionbroker/pam.d $PWD/intermediate/sessionbroker/etc/
@@ -55,8 +55,8 @@ function package_sessionprojector_launcher() {
     mkdir -p $PWD/intermediate/sessionprojector-launcher
     xcodebuild DSTROOT=$PWD/intermediate/sessionprojector-launcher CODE_SIGN_STYLE="$CODE_SIGN_STYLE" CODE_SIGN_IDENTITY="$CODE_SIGN_IDENTITY" -workspace $ULALACA_SRC/Ulalaca.xcworkspace -scheme sessionprojector-launcher install
 
-    mkdir -p $PWD/intermediate/sessionprojector/Library
-    cp -rv $ULALACA_SRC/sessionprojector/LaunchAgents $PWD/intermediate/sessionprojector/Library/
+    mkdir -p $PWD/intermediate/sessionprojector-launcher/Library
+    cp -rv $ULALACA_SRC/sessionprojector/LaunchAgents $PWD/intermediate/sessionprojector-launcher/Library/
 
     pkgbuild \
         --identifier "$SESSIONPROJECTOR_LAUNCHER_IDENTIFIER" \
